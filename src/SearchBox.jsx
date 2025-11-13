@@ -34,6 +34,13 @@ export default function SearchBox({updateInfo}) {
         }
     }
 
+    const formatTime = (unix) => {
+        return new Date(unix * 1000).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true  // enables AM/PM
+        });  
+    };
 
 
     let getWeatherInfo = async(lat, lon, city) => {
@@ -54,9 +61,11 @@ export default function SearchBox({updateInfo}) {
                 windSpeed : jsonRespose.wind.speed,
                 weatherCondition : jsonRespose.weather[0].description,
                 icon : jsonRespose.weather[0].icon,
-                time : time.toLocaleString(),
+                time : time.toLocaleString([], {hour12 : true}),
             }
-            console.log(jsonRespose)
+            result.sunrise = formatTime(result.sunrise);
+            result.sunset = formatTime(result.sunset);
+            // console.log(jsonRespose)
             return result;
         } catch (err) {
             throw err;
